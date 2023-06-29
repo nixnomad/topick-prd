@@ -7,3 +7,11 @@ prd environment for Topick, overriding the configuration for Topick and deploys 
 - [Repository](https://github.com/ExoKomodo/topick-prd)
 - [Topick UI](https://topick.fyi)
 
+## Updating topick
+
+Run `update.sh`
+
+```shell
+./update.sh
+```
+
