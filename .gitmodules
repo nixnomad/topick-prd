@@ -1,0 +1,4 @@
+[submodule "topick"]
+	path = topick
+	url = git@github.com:ExoKomodo/topick.git
+	branch = main

@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        app:
+          - client
+          - server
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./topick/${{ matrix.app }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: npm
+        cache-dependency-path: ./topick/${{ matrix.app }}/package-lock.json
+    - name: Setup
+      run: ./scripts/setup.sh
+    - name: Build
+      run: ./scripts/build.sh
+    - name: Unit tests
+      run: ./scripts/unit-test.sh
+    - name: Integration tests
+      run: ./scripts/integration-test.sh

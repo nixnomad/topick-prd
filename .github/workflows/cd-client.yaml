@@ -1,0 +1,39 @@
+name: CD (client)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    defaults:
+      run:
+        working-directory: ./topick/client
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: npm
+        cache-dependency-path: ./topick/client/package-lock.json
+    - name: Install dependencies
+      run: |
+        npm ci
+    - name: Build
+      run: |
+        npm run build
+        cp ./dist/index.html ./dist/404.html
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3.6.1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: ./topick/client/dist
+        allow_empty_commit: false
+        keep_files: false
+        force_orphan: true
+        cname: <ENV>.topick.fyi
